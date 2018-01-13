@@ -11,6 +11,12 @@ class Site(models.Model):
     latitude = models.CharField(max_length=50)
     longitude = models.CharField(max_length=50)
 
+    class Meta:
+        ordering = ('name',)
+
+    def __repr__(self):
+        return self.name
+
 
 class Data(models.Model):
     o3 = models.CharField(max_length=10)
@@ -20,3 +26,6 @@ class Data(models.Model):
     pm10 = models.CharField(max_length=10)
     time = models.CharField(max_length=50)
     site = models.ForeignKey(Site)
+
+    def __repr__(self):
+        return 'Data model for {} at {}'.format(self.site, self.time)
