@@ -2,23 +2,21 @@ from django.db import models
 
 
 class Site(models.Model):
-    name = db.Column(db.String(100), unique=True)
-    site_code = db.Column(db.String(10), unique=True)
-    region = db.Column(db.String(100))
-    environ = db.Column('environment', db.String(100))
-    url = db.Column(db.String(250))
-    map_url = db.Column(db.String(250))
-    lat = db.Column('latitude', db.String(50))
-    long = db.Column('longitude', db.String(50))
-    data = db.relationship('Data', backref='owner', lazy='dynamic')
-    current = db.relationship('Current', backref='site', lazy='dynamic')
+    name = models.CharField(max_length=100, verbose_name='Site name')
+    code = models.CharField(max_length=10, verbose_name='Site code')
+    region = models.CharField(max_length=100, verbose_name='UK region', help_text='e.g. east-anglia')
+    environ = models.CharField(max_length=100, verbose_name='Environment type', help_text='e.g. urban-traffic')
+    url = models.URLField(max_length=1000, verbose_name='DEFRA website link', help_text='URL link to DEFRA webpage')
+    map_url = models.URLField(max_length=1000, verbose_name='Google maps url')
+    latitude = models.CharField(max_length=50)
+    longitude = models.CharField(max_length=50)
 
 
 class Data(models.Model):
-    site_id = db.Column(db.Integer, db.ForeignKey('sites.id'), nullable=False)
-    o3 = db.Column(db.String(10), nullable=False)
-    no2 = db.Column(db.String(10), nullable=False)
-    so2 = db.Column(db.String(10), nullable=False)
-    pm25 = db.Column(db.String(10), nullable=False)
-    pm10 = db.Column(db.String(10), nullable=False)
-    time = db.Column(db.String(50), nullable=False)
+    o3 = models.CharField(max_length=10)
+    no2 = models.CharField(max_length=10)
+    so2 = models.CharField(max_length=10)
+    pm25 = models.CharField(max_length=10)
+    pm10 = models.CharField(max_length=10)
+    time = models.CharField(max_length=50)
+    site = models.ForeignKey(Site)
