@@ -1,6 +1,5 @@
 from .serializers import DataSerializer, SiteSerializer
 from .models import Data, Site
-from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
@@ -31,7 +30,7 @@ class SiteDetail(generics.RetrieveUpdateDestroyAPIView):
 class DataList(APIView):
 
     def get(self, request, format=None):
-        queryset = Site.objects.all()
+        queryset = Data.objects.all()
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -39,7 +38,6 @@ class DataList(APIView):
 class AllSiteData(APIView):
 
     def get(self, request, code, format=None):
-        queryset = Site.objects.filter(site__code=code)
+        queryset = Data.objects.filter(site__code=code)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
-
