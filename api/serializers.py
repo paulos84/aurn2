@@ -15,7 +15,7 @@ class SiteSerializer(serializers.ModelSerializer):
 class DataSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Site
+        model = Data
         # fields = ('name', 'region') - specify certain
         fields = '__all__'  #sends user all field
 
