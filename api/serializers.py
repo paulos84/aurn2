@@ -16,6 +16,4 @@ class DataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Data
-        # fields = ('name', 'region') - specify certain
-        fields = '__all__'  #sends user all field
-
+        fields = ('o3', 'no2', 'so2', 'pm25', 'pm10', 'time')

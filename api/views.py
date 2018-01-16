@@ -41,3 +41,14 @@ class AllSiteData(APIView):
         queryset = Data.objects.filter(site__code=code)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class RecentSiteData(APIView):
+
+    def get(self, request, code, days, format=None):
+        # filter by site code and limit to the last 2 objects
+        queryset = Data.objects.filter(site__code=code).order_by('-id')[:int(days)*24]
+        serializer = DataSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+# filter by site code and limit to the last 2 objects
+# queryset = Data.objects.filter(site__code=code).order_by('-id')[:2]
