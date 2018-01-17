@@ -10,7 +10,8 @@ class SiteSerializer(serializers.ModelSerializer):
 
 
 class DataSerializer(serializers.ModelSerializer):
+    site_code = serializers.CharField(source='site.code')
 
     class Meta:
         model = Data
-        fields = ('o3', 'no2', 'so2', 'pm25', 'pm10', 'time')
+        fields = ('o3', 'no2', 'so2', 'pm25', 'pm10', 'time', 'site_code')
