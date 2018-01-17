@@ -2,7 +2,7 @@ from .serializers import DataSerializer, SiteSerializer
 from .models import Data, Site
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import generics, mixins
 
 
 class SiteList(APIView):
@@ -13,17 +13,11 @@ class SiteList(APIView):
         return Response(serializer.data)
 
 
-class SiteDetail(generics.RetrieveUpdateDestroyAPIView):
+class SiteDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
 
     def get(self, request, pk):
-        return self.retrieve(request, pk=pk)
-
-    def put(self, request, pk):
-        return self.retrieve(request, pk=pk)
-
-    def delete(self, request, pk):
         return self.retrieve(request, pk=pk)
 
 
