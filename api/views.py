@@ -29,17 +29,8 @@ class RecentSiteData(APIView):
         return Response(serializer.data)
 
 
-class SiteList(APIView):
-    def get(self, request, format=None):
-        sites = Site.objects.all()
-        serializer = SiteSerializer(sites, many=True)
-        return Response(serializer.data)
+class SiteViewSet(viewsets.ReadOnlyModelViewSet):
 
-
-class SiteDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
-
-    def get(self, request, pk):
-        return self.retrieve(request, pk=pk)
 
