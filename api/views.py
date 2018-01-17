@@ -12,6 +12,14 @@ class DataViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DataSerializer
 
 
+class AllSiteData(APIView):
+
+    def get(self, request, code, format=None):
+        queryset = Data.objects.filter(site__code=code)
+        serializer = DataSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
 class RecentSiteData(APIView):
 
     def get(self, request, code, days, format=None):
