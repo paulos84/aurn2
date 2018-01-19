@@ -40,6 +40,8 @@ class Data(models.Model):
     def __repr__(self):
         return 'Data model for {} at {}'.format(self.site, self.time)
 
+    hours = ', '.join([str(i) for i in range(24)])
+
     @staticmethod
     def update():
         page = requests.get('https://uk-air.defra.gov.uk/latest/currentlevels',
