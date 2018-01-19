@@ -4,3 +4,4 @@ Built upon the Django-Rest-Framework.
 To Do:
 allow authentication users to post historical data if it does not exist
 
+To update data run management command from terminal: py manage.py collectdata
