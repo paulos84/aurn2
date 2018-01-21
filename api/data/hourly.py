@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
-import pytz
+from datetime import datetime, timezone, timedelta
+from datetime import datetime
 
 
 def hourly_data(soup, site):
@@ -18,10 +18,10 @@ def hourly_data(soup, site):
 
 def validate_data(data_dict):
     """ ensure that stale data is not recorded """
-    loc_dt = pytz.timezone('Europe/London').localize(datetime.now()) - timedelta(hours=1)
-    hourly_dt = datetime.strftime(loc_dt.replace(microsecond=0, second=0, minute=0), "%d/%m/%Y %H:%M")
-    if data_dict and data_dict['time'] != hourly_dt:
-        na_values = ['n/a'] * 5 + [hourly_dt]
+    hour_dt = datetime.now(timezone.utc).replace(microsecond=0, second=0, minute=0)
+    current_hour = datetime.strftime(hour_dt, "%d/%m/%Y %H:%M")
+    if data_dict and data_dict['time'] != current_hour:
+        na_values = ['n/a'] * 5 + [current_hour]
         return dict(zip(['o3', 'no2', 'so2', 'pm25', 'pm10', 'time'], na_values))
     else:
         return data_dict
