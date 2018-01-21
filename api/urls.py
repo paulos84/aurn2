@@ -4,6 +4,7 @@ from api import views
 from .views import DataViewSet, SiteViewSet
 from rest_framework.routers import DefaultRouter
 
+
 router = DefaultRouter()
 router.register(r'data', DataViewSet)
 router.register(r'sites', SiteViewSet)
