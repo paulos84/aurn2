@@ -3,6 +3,7 @@ import pytz
 
 
 def hourly_data(soup, site):
+    """ extract values from the html table row into a dictionary """
     if soup.find_all('a', string=site):
         site_link = soup.find_all('a', string=site)[0]
         row = site_link.findParent('td').findParent('tr').findAll('td')
@@ -16,6 +17,7 @@ def hourly_data(soup, site):
 
 
 def validate_data(data_dict):
+    """ ensure that stale data is not recorded """
     loc_dt = pytz.timezone('Europe/London').localize(datetime.now()) - timedelta(hours=1)
     hourly_dt = datetime.strftime(loc_dt.replace(microsecond=0, second=0, minute=0), "%d/%m/%Y %H:%M")
     if data_dict and data_dict['time'] != hourly_dt:

@@ -23,6 +23,7 @@ class Site(models.Model):
 
     @staticmethod
     def populate():
+        """ create and save objects using the data in data.site_info.py """
         for site in site_list:
             site_entry = Site.objects.create(**get_info(site))
             site_entry.save()
@@ -44,6 +45,7 @@ class Data(models.Model):
 
     @staticmethod
     def update():
+        """ get html content then for each site get values in a dictionary and save """
         page = requests.get('https://uk-air.defra.gov.uk/latest/currentlevels',
                             headers={'User-Agent': 'Not blank'}).content
         soup = BeautifulSoup(page, 'lxml')
