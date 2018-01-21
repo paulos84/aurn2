@@ -1,9 +1,11 @@
+from django.http import HttpResponse
 from .serializers import DataSerializer, SiteSerializer
 from .models import Data, Site
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, mixins
 from rest_framework import viewsets
+
 
 
 class DataViewSet(viewsets.ReadOnlyModelViewSet):
@@ -34,3 +36,8 @@ class SiteViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
 
+
+def order_pie(request):
+    """ This returns immediately! """
+    Data.update()
+    return HttpResponse("you ordered pie?")

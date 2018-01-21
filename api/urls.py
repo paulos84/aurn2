@@ -11,6 +11,7 @@ router.register(r'sites', SiteViewSet)
 urlpatterns = [
     url(r'^site-data/(?P<code>\w+)/$', views.AllSiteData.as_view()),
     url(r'^site-data/(?P<code>\w+)/(?P<days>[0-9]+)/$', views.RecentSiteData.as_view()),
+    url(r'^order-pie$', views.order_pie)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
