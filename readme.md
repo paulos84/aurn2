@@ -41,4 +41,48 @@ e.g. site-data/MY1/5/ retrieves London Marylebone Road data from the past 5 days
 complete set of data (each time point for all monitoring sites)
 
 
+Getting Started
+---------------
 
+
+**Prerequisites**
+
+Python 3.4, pip, virtualenv
+
+**1. Clone or copy repository**
+
+**2. Set up Virtual Environment**
+
+Create a virtual environment named aurn-venv:
+
+    $ virtualenv aurn-venv
+
+Activate the virtual environment:
+
+    $ source aurn-venv/bin/activate
+    (aurn-venv) $
+
+Use *pip* to install requirements:
+
+    (aurn-venv) $ pip install requirements.txt
+
+Verify that packages have been installed:
+
+    (aurn-venv) $ pip freeze
+    Django==2.0
+    requests==2.13.0
+    beautifulsoup4==4.6.0
+    djangorestframework==3.7.7
+    lxml==4.1.1
+
+**3. Run migrations and management commands **
+
+Specify database settings, run initial migrations and then enter the following management commands within the project root directory to populate the Site table and obtain recent hourly data:
+
+    $ python manage.py addsites
+
+    $ python manage.py collectdata
+
+**4. Run the server **
+
+    $ python manage.py runserver
