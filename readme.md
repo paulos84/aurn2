@@ -75,7 +75,7 @@ Verify that packages have been installed:
     djangorestframework==3.7.7
     lxml==4.1.1
 
-**3. Run migrations and management commands **
+**3. Run migrations and management commands**
 
 Specify database settings, run initial migrations and then enter the following management commands within the project root directory to populate the Site table and obtain recent hourly data:
 
@@ -83,6 +83,6 @@ Specify database settings, run initial migrations and then enter the following m
 
     $ python manage.py collectdata
 
-**4. Run the server **
+**4. Run the server**
 
     $ python manage.py runserver
