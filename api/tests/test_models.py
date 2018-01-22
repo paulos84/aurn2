@@ -22,3 +22,5 @@ class DataModelTest(TestCase):
         time_point = Data.objects.get(id=1)
         max_length = time_point._meta.get_field('time').max_length
         self.assertEquals(max_length, 50)
+
+
