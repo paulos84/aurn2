@@ -51,7 +51,7 @@ class Data(models.Model):
             latest = Data.objects.all().order_by('-id')[0]
             hour_dt = datetime.now(timezone.utc).replace(microsecond=0, second=0, minute=0)
             current_hour = datetime.strftime(hour_dt, "%d/%m/%Y %H:%M")
-            if latest.time != current_hour and datetime.now().minute > 40:
+            if latest.time != current_hour and datetime.now().minute > 20:
                 return True
         if check_time():
             page = requests.get('https://uk-air.defra.gov.uk/latest/currentlevels',
