@@ -9,7 +9,7 @@ current measurements and is updated on an hourly basis. The Data.update() static
 defined in api/models.py scrapes the relevant values and saves them to the database.
 To run this method and update data, run the management command from the project root directory: py manage.py collectdata
 
-The API providing data since 21/01/2018 is available online from the root URL:  http://aurn-api.pauljd.me. The Django application was deployed using Amazon Web Services and it uses an AWS Lambda function triggered on an hourly basis by CloudWatch Events.
+The API providing data since January 2018 is available online from the root URL:  http://aurn-api.pauljd.me. The Django application was deployed using Amazon Web Services and it uses an AWS Lambda function triggered on an hourly basis by CloudWatch Events.
 
 URL Routes
 ----------

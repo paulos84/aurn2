@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.routers import DefaultRouter
 from api import views
 from .views import DataViewSet, SiteViewSet
-from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()

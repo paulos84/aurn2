@@ -1,9 +1,9 @@
 from django.db import models
 from bs4 import BeautifulSoup
+from datetime import datetime, timezone
 import requests
 from api.data.hourly import hourly_data, validate_data
 from api.data.site_info import site_list, get_info
-from datetime import datetime, timezone
 
 
 class Site(models.Model):

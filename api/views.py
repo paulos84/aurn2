@@ -1,11 +1,8 @@
-from django.http import HttpResponse
-from .serializers import DataSerializer, SiteSerializer
-from .models import Data, Site
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import generics, mixins
 from rest_framework import viewsets
-from django.contrib.auth import authenticate
+from .serializers import DataSerializer, SiteSerializer
+from .models import Data, Site
 
 
 class DataViewSet(viewsets.ReadOnlyModelViewSet):
@@ -17,6 +14,7 @@ class DataViewSet(viewsets.ReadOnlyModelViewSet):
 class AllSiteData(APIView):
 
     def get(self, request, code, format=None):
+        """ filter results according to the site code """
         queryset = Data.objects.filter(site__code=code)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -25,7 +23,7 @@ class AllSiteData(APIView):
 class RecentSiteData(APIView):
 
     def get(self, request, code, days, format=None):
-        # filter by site code and limit to the last 2 objects
+        """ filter results according to the site code and number of recent days """
         queryset = Data.objects.filter(site__code=code).order_by('-id')[:int(days)*24]
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
