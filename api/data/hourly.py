@@ -13,6 +13,8 @@ def hourly_data(soup, site):
         pm25 = row[4].text.replace('\xa0', ' ').split(' ')[0]
         pm10 = row[5].text.replace('\xa0', ' ').split(' ')[0]
         time = row[6].text[:10] + ' ' + row[6].text[10:]
+        if time.split()[1] == '24:00':
+            time = time.replace('24:00', '00:00')
         return {'o3': o3, 'no2': no2, 'so2': so2, 'pm25': pm25, 'pm10': pm10, 'time': time}
 
 
