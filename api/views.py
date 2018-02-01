@@ -2,7 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import DataSerializer, SiteSerializer
+import datetime
 from .models import Data, Site
+
+
+class DataViewSet(viewsets.ReadOnlyModelViewSet):
+
+    queryset = Data.objects.all()
+    serializer_class = DataSerializer
 
 
 class AllSiteData(APIView):
@@ -19,6 +26,16 @@ class RecentSiteData(APIView):
     def get(self, request, code, days, format=None):
         """ filter results according to the site code and number of recent days """
         queryset = Data.objects.filter(site__code=code).order_by('-id')[:int(days)*24]
+        serializer = DataSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class DateToday(APIView):
+
+    def get(self, request, format=None):
+        """ filter results according to the site code and number of recent days """
+        today = datetime.datetime.today().strftime('%d/%m/%Y')
+        queryset = Data.objects.filter(time__contains=today)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
 
