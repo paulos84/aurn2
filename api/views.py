@@ -5,12 +5,6 @@ from .serializers import DataSerializer, SiteSerializer
 from .models import Data, Site
 
 
-class DataViewSet(viewsets.ReadOnlyModelViewSet):
-
-    queryset = Data.objects.all()
-    serializer_class = DataSerializer
-
-
 class AllSiteData(APIView):
 
     def get(self, request, code, format=None):

@@ -6,7 +6,6 @@ from .views import DataViewSet, SiteViewSet
 
 
 router = DefaultRouter()
-router.register(r'data', DataViewSet)
 router.register(r'sites', SiteViewSet)
 
 urlpatterns = [
