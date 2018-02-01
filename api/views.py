@@ -34,7 +34,7 @@ class DateToday(APIView):
 
     def get(self, request, format=None):
         """ filter results according to the site code and number of recent days """
-        today = datetime.datetime.today().strftime('%d/%m/%Y')
+        today = datetime.date.today().strftime('%d/%m/%Y')
         queryset = Data.objects.filter(time__contains=today)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)

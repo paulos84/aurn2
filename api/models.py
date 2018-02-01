@@ -36,7 +36,7 @@ class Data(models.Model):
     so2 = models.CharField(max_length=10)
     pm25 = models.CharField(max_length=10)
     pm10 = models.CharField(max_length=10)
-    time = models.CharField(max_length=50)
+    time = models.DateTimeField()
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
 
     def __repr__(self):
@@ -46,20 +46,13 @@ class Data(models.Model):
 
     @staticmethod
     def update():
-        """ if appropriate time, get html content then for each site get values in a dictionary and save """
-        def check_time():
-            latest = Data.objects.all().order_by('-id')[0]
-            hour_dt = datetime.now(timezone.utc).replace(microsecond=0, second=0, minute=0)
-            current_hour = datetime.strftime(hour_dt, "%d/%m/%Y %H:%M")
-            if latest.time != current_hour and datetime.now().minute > 20:
-                return True
-        if check_time():
-            page = requests.get('https://uk-air.defra.gov.uk/latest/currentlevels',
-                                headers={'User-Agent': 'Not blank'}).content
-            soup = BeautifulSoup(page, 'lxml')
-            for site in Site.objects.all():
-                data = validate_data(hourly_data(soup, site.name))
-                if data:
-                    site_data = Data.objects.create(site=site, **data)
-                    site_data.save()
+        """ get html content then for each site get values in a dictionary and save """
+        page = requests.get('https://uk-air.defra.gov.uk/latest/currentlevels',
+                            headers={'User-Agent': 'Not blank'}).content
+        soup = BeautifulSoup(page, 'lxml')
+        for site in Site.objects.all():
+            data = validate_data(hourly_data(soup, site.name))
+            if data:
+                site_data = Data.objects.create(site=site, **data)
+                site_data.save()
 
