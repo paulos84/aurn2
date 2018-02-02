@@ -61,6 +61,6 @@ class SiteViewSet(viewsets.ReadOnlyModelViewSet):
 
 def order_pie(request):
     """ This returns in a few seconds """
-    
+
     Data.update()
     return HttpResponse('you ordered pie?')

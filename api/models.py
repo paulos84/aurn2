@@ -1,9 +1,11 @@
 from django.db import models
 from bs4 import BeautifulSoup
-from datetime import datetime, timezone
+from datetime import datetime
 import requests
 from api.data.hourly import hourly_data, validate_data
 from api.data.site_info import site_list, get_info
+import pytz
+
 
 
 class Site(models.Model):
@@ -50,16 +52,17 @@ class Data(models.Model):
     def __repr__(self):
         return 'Data model for {} at {}'.format(self.site, self.time)
 
-    hours = ', '.join([str(i) for i in range(24)])
-
     @staticmethod
     def update():
-        """ get html content then for each site get values in a dictionary and save """
+        """ get html content then, if appropriate, get values in a dictionary for each site and save """
         page = requests.get('https://uk-air.defra.gov.uk/latest/currentlevels',
                             headers={'User-Agent': 'Not blank'}).content
-        soup = BeautifulSoup(page, 'lxml')
-        for site in Site.objects.all():
-            data = validate_data(hourly_data(soup, site.name))
-            if data:
-                site_data = Data.objects.create(site=site, **data)
-                site_data.save()
+        latest = Data.objects.latest('id')
+        if latest.time != datetime.now(pytz.timezone('Europe/London')).replace(microsecond=0, second=0, minute=0):
+            if datetime.now().minute > 22:
+                soup = BeautifulSoup(page, 'lxml')
+                for site in Site.objects.all():
+                    data = validate_data(hourly_data(soup, site.name))
+                    if data:
+                        site_data = Data.objects.create(site=site, **data)
+                        site_data.save()
