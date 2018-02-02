@@ -11,7 +11,7 @@ router.register(r'sites', SiteViewSet)
 urlpatterns = [
     url(r'^site-data/(?P<code>\w+)/$', views.AllSiteData.as_view()),
     url(r'^site-data/(?P<code>\w+)/(?P<days>[0-9]+)/$', views.RecentSiteData.as_view()),
-    url(r'^sites-data/(?P<date>\d{4}-\d{2}-\d{2})/$', views.DateData.as_view()),
+    url(r'^data/(?P<date>\d{4}-\d{2}-\d{2})/$', views.DateData.as_view()),
     #url(r'^recent-data/$', views.LatestHour.as_view()),
     url(r'^order-pie$', views.order_pie)
 ]

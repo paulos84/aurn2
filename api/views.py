@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import DataSerializer, SiteSerializer
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from .models import Data, Site
 
 
@@ -35,24 +35,14 @@ class RecentSiteData(APIView):
         return Response(serializer.data)
 
 
-
-"""
-class LatestHour(APIView):
-
-    def get(self, request, format=None):
-        #filter results according to the most recent hourly values for each site
-        queryset = Data.recent.all()
-        serializer = DataSerializer(queryset, many=True)
-        return Response(serializer.data)
-"""
-
-
 class DateData(APIView):
 
     def get(self, request, date=datetime.strftime(date.today(), "%Y-%m-%d"), format=None):
         """ filter results according to a specified day with format YYYY-MM-DD """
-        uk_date = '{}/{}/{}'.format(*date.split('-')[::-1])
-        queryset = Data.objects.filter(time__contains=uk_date)
+        dt_day = datetime.strptime(date, "%Y-%m-%d")
+        start = datetime.strptime(date, "%Y-%m-%d") + timedelta(days=-1)
+        end = datetime.strptime(date, "%Y-%m-%d") + timedelta(days=1)
+        queryset = Data.objects.filter(time__lt=end, time__gt=start)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -73,8 +63,7 @@ class SiteViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def order_pie(request):
-    """ This returns in a few seconds! """
-
+    """ This returns in a few seconds """
 
     Data.update()
     return 'you ordered pie?'
