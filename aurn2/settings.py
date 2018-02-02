@@ -87,7 +87,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-REST_FRAMEWORK = {
-
-    'DATETIME_FORMAT': "%m/%d/%Y %H:%M",
-}
+SWAGGER_SETTINGS = {
+    'enabled_methods': [
+        'get']}

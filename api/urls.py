@@ -5,7 +5,7 @@ from api import views
 from .views import SiteViewSet, RecentDataViewSet
 
 router = DefaultRouter()
-router.register(r'current', RecentDataViewSet, base_name='current')
+router.register(r'current-data', RecentDataViewSet, base_name='current')
 router.register(r'sites', SiteViewSet)
 
 urlpatterns = [
