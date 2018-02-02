@@ -34,8 +34,8 @@ class LatestHour(APIView):
 
     def get(self, request, format=None):
         """ filter results according to the most recent hourly values for each site """
-        queryset = Data.objects.order_by('-id')[:Site.objects.count()]
-        serializer = DataSerializer(queryset[::-1], many=True)
+        queryset = Data.recent.all()
+        serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
 
 

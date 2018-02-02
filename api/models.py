@@ -30,6 +30,12 @@ class Site(models.Model):
             site_entry.save()
 
 
+class LatestHourManager(models.Manager):
+    def get_queryset(self):
+        qs = super().get_queryset().order_by('-id')[:Site.objects.count()]
+        return qs[::-1]
+
+
 class Data(models.Model):
     o3 = models.CharField(max_length=10)
     no2 = models.CharField(max_length=10)
@@ -38,6 +44,8 @@ class Data(models.Model):
     pm10 = models.CharField(max_length=10)
     time = models.DateTimeField()
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    objects = models.Manager()  # The default manager.
+    recent = LatestHourManager()
 
     def __repr__(self):
         return 'Data model for {} at {}'.format(self.site, self.time)
