@@ -35,25 +35,18 @@ class RecentSiteData(APIView):
         return Response(serializer.data)
 
 
-class DateData(APIView):
+class DateFilterData(APIView):
+    today = datetime.strftime(date.today(), "%Y-%m-%d")
 
-    def get(self, request, date=datetime.strftime(date.today(), "%Y-%m-%d"), format=None):
-        """ filter results according to a specified day with format YYYY-MM-DD """
-        dt_day = datetime.strptime(date, "%Y-%m-%d")
-        start = datetime.strptime(date, "%Y-%m-%d") + timedelta(days=-1)
-        end = datetime.strptime(date, "%Y-%m-%d") + timedelta(days=1)
-        queryset = Data.objects.filter(time__lt=end, time__gt=start)
+    def get(self, request, date1=today, date2=today, format=None):
+        """ filter results by either a date range, a single date or today """
+        if date1 != self.today and date2 == self.today:
+            date2 = date1
+        start = datetime.strptime(date1, "%Y-%m-%d") + timedelta(days=-1)
+        end = datetime.strptime(date2, "%Y-%m-%d") + timedelta(days=1)
+        queryset = Data.objects.filter(time__gt=start, time__lt=end)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
-
-
-class DateRangeData(APIView):
-
-    def get(self, request, date1, date2, format=None):
-        """ filter results according to a specified date range withs formats YYYY-MM-DD """
-        uk_date1 = '{}/{}/{}'.format(*date1.split('-')[::-1])
-        uk_date2 = '{}/{}/{}'.format(*date2.split('-')[::-1])
-        pass
 
 
 class SiteViewSet(viewsets.ReadOnlyModelViewSet):

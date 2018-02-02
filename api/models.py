@@ -44,7 +44,7 @@ class Data(models.Model):
     pm10 = models.CharField(max_length=10)
     time = models.DateTimeField()
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
-    objects = models.Manager()  # The default manager.
+    objects = models.Manager()
     recent = LatestHourManager()
 
     def __repr__(self):
@@ -63,4 +63,3 @@ class Data(models.Model):
             if data:
                 site_data = Data.objects.create(site=site, **data)
                 site_data.save()
-

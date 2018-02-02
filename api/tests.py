@@ -1,6 +1,5 @@
 from django.test import TestCase
 from rest_framework.test import APIClient, APIRequestFactory
-from django.forms import model_to_dict
 from api.models import Data, Site
 from api.views import AllSiteData
 
