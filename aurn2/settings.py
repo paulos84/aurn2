@@ -53,9 +53,9 @@ WSGI_APPLICATION = 'aurn2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'aurn2',
+        'NAME': os.environ.get('NAME'),
         'USER': 'postgres',
-        'PASSWORD': 'pliveevil',
+        'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }}

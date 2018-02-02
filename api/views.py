@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -60,6 +61,6 @@ class SiteViewSet(viewsets.ReadOnlyModelViewSet):
 
 def order_pie(request):
     """ This returns in a few seconds """
-
+    
     Data.update()
-    return 'you ordered pie?'
+    return HttpResponse('you ordered pie?')
