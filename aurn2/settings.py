@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api.apps.ApiConfig',
+    'rest_framework_swagger',
 ]
 
 MIDDLEWARE = [
@@ -86,7 +87,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-REST_FRAMEWORK = {
-
-    'DATETIME_FORMAT': "%m/%d/%Y %H:%M",
-}
+SWAGGER_SETTINGS = {
+    'enabled_methods': [
+        'get']}

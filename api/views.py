@@ -4,12 +4,15 @@ from rest_framework import viewsets
 from .serializers import DataSerializer, SiteSerializer
 from datetime import datetime, date, timedelta
 from .models import Data, Site
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='AURN Air Quality Data API', url=None)
 
 
 class RecentDataViewSet(viewsets.ReadOnlyModelViewSet):
 
     def list(self, request, format=None):
-        """ return data from the Data Custom Manager for latest hourly values"""
+        """ air quality measurements for the most recent hour for each monitoring site"""
         queryset = Data.recent.all()
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
@@ -39,7 +42,7 @@ class DateFilterData(APIView):
     today = datetime.strftime(date.today(), "%Y-%m-%d")
 
     def get(self, request, date1=today, date2=today, format=None):
-        """ filter results by either a date range, a single date or today """
+        """ filter results by either a date range, a single date or default of today """
         if date1 != self.today and date2 == self.today:
             date2 = date1
         start = datetime.strptime(date1, "%Y-%m-%d") + timedelta(days=-1)
@@ -50,7 +53,7 @@ class DateFilterData(APIView):
 
 
 class SiteViewSet(viewsets.ReadOnlyModelViewSet):
-
+    """ site information for each monitoring site """
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
 
