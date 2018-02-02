@@ -4,6 +4,10 @@ from rest_framework import viewsets
 from .serializers import DataSerializer, SiteSerializer
 from datetime import datetime, date, timedelta
 from .models import Data, Site
+from django.conf.urls import url
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Pastebin API')
 
 
 class RecentDataViewSet(viewsets.ReadOnlyModelViewSet):

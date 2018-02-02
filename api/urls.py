@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^data/$', views.DateFilterData.as_view()),
     url(r'^data/(?P<date1>\d{4}-\d{2}-\d{2})/$', views.DateFilterData.as_view()),
     url(r'^data/(?P<date1>\d{4}-\d{2}-\d{2})/(?P<date2>\d{4}-\d{2}-\d{2})/$', views.DateFilterData.as_view()),
-    url(r'^order-pie$', views.order_pie)
+    url(r'^order-pie$', views.order_pie),
+    url(r'^docs/$', views.schema_view)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
