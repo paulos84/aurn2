@@ -2,14 +2,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import DataSerializer, SiteSerializer
-import datetime
+from datetime import datetime, date, timedelta
 from .models import Data, Site
 
 
-class DataViewSet(viewsets.ReadOnlyModelViewSet):
+class RecentDataViewSet(viewsets.ReadOnlyModelViewSet):
 
-    queryset = Data.objects.all()
-    serializer_class = DataSerializer
+    def list(self, request, format=None):
+        """ return data from the Data Custom Manager for latest hourly values"""
+        queryset = Data.recent.all()
+        serializer = DataSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    queryset = Data.recent.all()
 
 
 class AllSiteData(APIView):
@@ -30,33 +35,18 @@ class RecentSiteData(APIView):
         return Response(serializer.data)
 
 
-class DateToday(APIView):
+class DateFilterData(APIView):
+    today = datetime.strftime(date.today(), "%Y-%m-%d")
 
-    def get(self, request, format=None):
-        """ filter results according to the site code and number of recent days """
-        today = datetime.datetime.today().strftime('%d/%m/%Y')
-        queryset = Data.objects.filter(time__contains=today)
+    def get(self, request, date1=today, date2=today, format=None):
+        """ filter results by either a date range, a single date or today """
+        if date1 != self.today and date2 == self.today:
+            date2 = date1
+        start = datetime.strptime(date1, "%Y-%m-%d") + timedelta(days=-1)
+        end = datetime.strptime(date2, "%Y-%m-%d") + timedelta(days=1)
+        queryset = Data.objects.filter(time__gt=start, time__lt=end)
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
-
-
-class DateData(APIView):
-
-    def get(self, request, date, format=None):
-        """ filter results according to a specified day with format YYYY-MM-DD """
-        uk_date = '{}/{}/{}'.format(*date.split('-')[::-1])
-        queryset = Data.objects.filter(time__contains=uk_date)
-        serializer = DataSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-
-class DateRangeData(APIView):
-
-    def get(self, request, date1, date2, format=None):
-        """ filter results according to a specified date range withs formats YYYY-MM-DD """
-        uk_date1 = '{}/{}/{}'.format(*date1.split('-')[::-1])
-        uk_date2 = '{}/{}/{}'.format(*date2.split('-')[::-1])
-        pass
 
 
 class SiteViewSet(viewsets.ReadOnlyModelViewSet):
@@ -66,8 +56,7 @@ class SiteViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def order_pie(request):
-    """ This returns in a few seconds! """
-
+    """ This returns in a few seconds """
 
     Data.update()
     return 'you ordered pie?'

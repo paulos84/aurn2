@@ -1,5 +1,6 @@
 Django==2.0
 pytz==2017.3
+python-dateutil==2.6.1
 requests==2.13.0
 beautifulsoup4==4.6.0
 djangorestframework==3.7.7

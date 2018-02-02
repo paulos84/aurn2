@@ -52,7 +52,7 @@ WSGI_APPLICATION = 'aurn2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'aurn',
+        'NAME': 'aurn2',
         'USER': 'postgres',
         'PASSWORD': 'pliveevil',
         'HOST': 'localhost',
@@ -85,3 +85,8 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+
+    'DATETIME_FORMAT': "%m/%d/%Y %H:%M",
+}
