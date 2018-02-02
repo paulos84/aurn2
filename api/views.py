@@ -2,14 +2,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import DataSerializer, SiteSerializer
-import datetime
+from datetime import datetime, date
 from .models import Data, Site
 
 
-class DataViewSet(viewsets.ReadOnlyModelViewSet):
+class RecentDataViewSet(viewsets.ReadOnlyModelViewSet):
 
-    queryset = Data.objects.all()
-    serializer_class = DataSerializer
+    def list(self, request, format=None):
+        """ return data from the Data Custom Manager for latest hourly values"""
+        queryset = Data.recent.all()
+        serializer = DataSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    queryset = Data.recent.all()
 
 
 class AllSiteData(APIView):
@@ -30,18 +35,21 @@ class RecentSiteData(APIView):
         return Response(serializer.data)
 
 
+
+"""
 class LatestHour(APIView):
 
     def get(self, request, format=None):
-        """ filter results according to the most recent hourly values for each site """
+        #filter results according to the most recent hourly values for each site
         queryset = Data.recent.all()
         serializer = DataSerializer(queryset, many=True)
         return Response(serializer.data)
+"""
 
 
 class DateData(APIView):
 
-    def get(self, request, date, format=None):
+    def get(self, request, date=datetime.strftime(date.today(), "%Y-%m-%d"), format=None):
         """ filter results according to a specified day with format YYYY-MM-DD """
         uk_date = '{}/{}/{}'.format(*date.split('-')[::-1])
         queryset = Data.objects.filter(time__contains=uk_date)
