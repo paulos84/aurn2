@@ -30,13 +30,12 @@ class RecentSiteData(APIView):
         return Response(serializer.data)
 
 
-class DateToday(APIView):
+class LatestHour(APIView):
 
     def get(self, request, format=None):
-        """ filter results according to the site code and number of recent days """
-        today = datetime.date.today().strftime('%d/%m/%Y')
-        queryset = Data.objects.filter(time__contains=today)
-        serializer = DataSerializer(queryset, many=True)
+        """ filter results according to the most recent hourly values for each site """
+        queryset = Data.objects.order_by('-id')[:Site.objects.count()]
+        serializer = DataSerializer(queryset[::-1], many=True)
         return Response(serializer.data)
 
 

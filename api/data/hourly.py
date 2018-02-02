@@ -1,5 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil import parser
+import pytz
+
+local_tz = pytz.timezone('Europe/London')
 
 
 def hourly_data(soup, site):
@@ -12,16 +15,22 @@ def hourly_data(soup, site):
         so2 = row[3].text.replace('\xa0', ' ').split(' ')[0]
         pm25 = row[4].text.replace('\xa0', ' ').split(' ')[0]
         pm10 = row[5].text.replace('\xa0', ' ').split(' ')[0]
-        hour = row[6].text[:10] + ' ' + row[6].text[10:].replace('24:00', '00:00')
-        dt = parser.parse(hour)
-        return {'o3': o3, 'no2': no2, 'so2': so2, 'pm25': pm25, 'pm10': pm10, 'time': dt}
+        hour = row[6].text[:10] + ' ' + row[6].text[10:]
+        try:
+            dt = parser.parse(hour)
+        # expect ValueError for times containing '24:00'
+        except ValueError:
+            time = hour.replace('24:00', '00:00')
+            dt = datetime.strptime(time, "%d/%m/%Y %H:%M")
+            dt += timedelta(days=1)
+        return {'o3': o3, 'no2': no2, 'so2': so2, 'pm25': pm25, 'pm10': pm10, 'time': local_tz.localize(dt)}
 
 
 def validate_data(data_dict):
     """ ensure that stale data is not recorded """
-    utc_hour = datetime.datetime.utcnow().replace(microsecond=0, second=0, minute=0)
-    if data_dict['time'] != utc_hour:
-        na_values = ['n/a'] * 5 + [utc_hour]
+    current_hour = datetime.now(local_tz).replace(microsecond=0, second=0, minute=0)
+    if data_dict['time'] != current_hour:
+        na_values = ['n/a'] * 5 + [current_hour]
         return dict(zip(['o3', 'no2', 'so2', 'pm25', 'pm10', 'time'], na_values))
     else:
         return data_dict
