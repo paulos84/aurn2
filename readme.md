@@ -1,20 +1,22 @@
 AURN-API V2
 ------------
 
-REST API for UK air quality data collected from live measurements published by a government agency.
-Built using the Django-Rest-Framework along with the Swagger API documentation tool.
 
-The API for an updated collection of air quality data is available online from the root URL:  http://ukair.pauljd.me. The Django application was deployed using Amazon Web Services and it uses an AWS Lambda function triggered on an hourly basis by CloudWatch Events.
+REST API for UK air quality data collected from [AURN](https://uk-air.defra.gov.uk/networks/network-info?view=aurn) network measurements published by the government agency DEFRA. The values are rolling 24 hour averages, which are updated hourly.
+
+The Django application was deployed using Amazon Web Services and it uses an AWS Lambda function triggered on an hourly basis by CloudWatch Events.
+
+Data is available from the root URL:  http://ukair.pauljd.me/ 
 
 URL Routes
 ----------
-Api Root: http://127.0.0.1:8000/
 
 **docs/**
 
 auto-generated documentation detailing endpoints which serve GET requests
 
 **current-data/**
+
 data for each monitoring site for the most recent hour
 
 **sites/**
@@ -42,7 +44,6 @@ data for each monitoring site between a range of dates with format YYYY-MM-DD
 data for a specified monitoring site from a specified number of recent days
 
 e.g. site-data/MY1/5/ retrieves London Marylebone Road data from the past 5 days
-
 
 
 
