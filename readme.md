@@ -29,11 +29,11 @@ site information for a specified monitoring site
 
 data for each monitoring site for the current date
 
-**data/<date>**
+**data/<date_1>**
 
 data for each monitoring site for a specified date in format YYYY-MM-DD
 
-**data/<date1>/<date2>**
+**data/<date_1>/<date_2>**
 
 data for each monitoring site between a range of dates with format YYYY-MM-DD
 
