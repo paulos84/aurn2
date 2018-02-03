@@ -17,7 +17,7 @@ def hourly_data(soup, site):
         pm10 = row[5].text.replace('\xa0', ' ').split(' ')[0]
         hour = row[6].text[:10] + ' ' + row[6].text[10:]
         try:
-            dt = parser.parse(hour)
+            dt = parser.parse(hour, dayfirst=True)
         # expect ValueError for times containing '24:00'
         except ValueError:
             time = hour.replace('24:00', '00:00')
