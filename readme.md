@@ -11,7 +11,7 @@ Data is available from the root URL:  http://ukair.pauljd.me/
 URL Routes
 ----------
 
-**docs/**
+**[docs](http://ukair.pauljd.me/docs/)/**
 
 auto-generated documentation detailing endpoints which serve GET requests
 
