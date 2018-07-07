@@ -7,8 +7,8 @@ from api.data.site_info import site_list, get_info
 import pytz
 
 
-
 class Site(models.Model):
+    """ represents an air pollution monitoring site within the AURN network """
     name = models.CharField(unique=True, max_length=100, verbose_name='Site name')
     code = models.CharField(unique=True, max_length=10, verbose_name='Site code')
     region = models.CharField(max_length=100, verbose_name='UK region', help_text='e.g. east-anglia')
@@ -33,12 +33,13 @@ class Site(models.Model):
 
 
 class LatestHourManager(models.Manager):
-    def get_queryset(self):
+    def get_queryset(self)
         qs = super().get_queryset().order_by('-id')[:Site.objects.count()]
         return qs[::-1]
 
 
 class Data(models.Model):
+    """ represents a set of air pollution measurements at a certain time """
     o3 = models.CharField(max_length=10)
     no2 = models.CharField(max_length=10)
     so2 = models.CharField(max_length=10)
