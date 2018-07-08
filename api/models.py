@@ -33,7 +33,7 @@ class Site(models.Model):
 
 
 class LatestHourManager(models.Manager):
-    def get_queryset(self)
+    def get_queryset(self):
         qs = super().get_queryset().order_by('-id')[:Site.objects.count()]
         return qs[::-1]
 
